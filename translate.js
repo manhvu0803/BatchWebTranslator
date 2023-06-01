@@ -24,7 +24,7 @@ function getTextCell(id, text) {
 
     if (!cell) {
         cell = document.createElement("td");
-        cell.id = `${id}_${lang}`;
+        cell.id = id;
     }
 
     cell.innerText = data[i].text;
