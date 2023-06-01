@@ -1,6 +1,6 @@
 const langs = ['de', 'en', "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
 
-function translate() {
+function translateInput() {
     let input = document.getElementById("text_input").value;
     let temp = document.getElementById("temp_input").value;
     fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate?text=${input}`, "microsoft_row");
@@ -9,7 +9,7 @@ function translate() {
 
 async function fetchTranslation(url, id) {
     var row = document.getElementById(id);
-    var rowUpper = document.getElementById(`id_${up}`);
+    var rowUpper = document.getElementById(`${id}_up`);
     let response = await fetch(url);
     let data = await response.json();
 

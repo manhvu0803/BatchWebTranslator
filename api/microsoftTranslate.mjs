@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 
-if (!process?.env) {
+if (!process.env.MICROSOFT_KEY) {
     dotenv.config();
 }
 
