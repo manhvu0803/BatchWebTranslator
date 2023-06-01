@@ -27,6 +27,6 @@ function getTextCell(id, text) {
         cell.id = id;
     }
 
-    cell.innerText = data[i].text;
+    cell.innerText = text;
     return cell;
 }
