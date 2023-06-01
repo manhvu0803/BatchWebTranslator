@@ -59,7 +59,7 @@ async function prompt(text, temp, tone = "serious") {
                 "tr": "",
                 "vi": "",
                 "zh-Hans": "",
-                "zh-Hant": "",
+                "zh-Hant": ""
                 }
                 }`
             }
@@ -85,7 +85,7 @@ function parseResponse(response) {
     var rawMessage = data.message.content;
     console.log("raw:");
     console.log(data);
-    var filteredMessage = rawMessage.match(/{.+}/gs);
+    var filteredMessage = rawMessage.match(/{.+}/gs)[0];
     console.log("filtered:");
     console.log(filteredMessage);
     var message = JSON.parse(filteredMessage);

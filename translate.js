@@ -54,7 +54,7 @@ async function fetchGpt(text, temp, tone = "serious") {
                 "tr": "",
                 "vi": "",
                 "zh-Hans": "",
-                "zh-Hant": "",
+                "zh-Hant": ""
                 }
                 }`
             }
@@ -77,7 +77,7 @@ async function fetchGpt(text, temp, tone = "serious") {
         body: JSON.stringify(body)
     })
 
-    var data = await response.text();
+    var data = await response.json();
     outputData(parseResponse(data), "gpt_row");
 }
 
@@ -88,7 +88,8 @@ async function fetchGptKey() {
 }
 
 function parseResponse(data) {
-    var filteredMessage = data.match(/{.+}/gs);
+    data = data.choices[0].message.content;
+    var filteredMessage = data.match(/{.+}/gs)[0];
     console.log("filtered:");
     console.log(filteredMessage);
     var message = JSON.parse(filteredMessage);
