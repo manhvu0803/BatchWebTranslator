@@ -11,27 +11,22 @@ async function microsoftTranslate() {
     let i = 0;
     let id = "microsft_row";
     for (let lang in langs) {
-        var cell = document.createElement("td");
-        cell.innerText = data[i].text;
-        cell.id = `${id}_${lang}`;
-        row.appendChild(cell);
-
-        cell = document.createElement("td");
-        cell.innerText = data[i].text.toUpperCase();
-        cell.id = `${id}_up_${lang}`;
-        rowUpper.appendChild(cell);
+        row.appendChild(getTextCell(`${id}_${lang}`, data[i].text));
+        rowUpper.appendChild(getTextCell(`${id}_up_${lang}`, data[i].text.toUpperCase()));
         i++;
     }
 
     console.log(data);
 }
 
-function createCells(id) {
-    let cells = [];
-    for (let lang of langs) {
-        var cell = document.createElement("td");
+function getTextCell(id, text) {
+    var cell = document.getElementById(id);
+
+    if (!cell) {
+        cell = document.createElement("td");
         cell.id = `${id}_${lang}`;
-        cells.push(cell);
     }
-    return cells;
+
+    cell.innerText = data[i].text;
+    return cell;
 }
