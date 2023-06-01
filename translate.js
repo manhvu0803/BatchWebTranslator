@@ -1,21 +1,26 @@
 const langs = ['de', 'en', "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
 
-async function microsoftTranslate() {
-    var row = document.getElementById("microsft_row");
-    var rowUpper = document.getElementById("microsft_row_up");
-
+function translate() {
     let input = document.getElementById("text_input").value;
-    let response = await fetch(`https://microsoft-translate-manhvu0803.vercel.app/api/translate?text=${input}`);
+    let temp = document.getElementById("temp_input").value;
+    fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate?text=${input}`, "microsoft_row");
+    fetchTranslation(`https://microsoft-translate.vercel.app/api/gptTranslate?text=${input}&temp=${temp}`, "gpt_row");
+}
+
+async function fetchTranslation(url, id) {
+    var row = document.getElementById(id);
+    var rowUpper = document.getElementById(`id_${up}`);
+    let response = await fetch(url);
     let data = await response.json();
 
     let i = 0;
-    let id = "microsft_row";
     for (let lang in langs) {
         row.appendChild(getTextCell(`${id}_${lang}`, data[i].text));
         rowUpper.appendChild(getTextCell(`${id}_up_${lang}`, data[i].text.toUpperCase()));
         i++;
     }
 
+    console.log(id);
     console.log(data);
 }
 

@@ -6,10 +6,9 @@ if (!process?.env) {
     dotenv.config();
 }
 
-let key = process.env.KEY;
+let key = process.env.MICROSOFT_KEY;
 let endpoint = "https://api.cognitive.microsofttranslator.com";
 let location = "eastus2";
-let port = process.env.PORT || 3000;
 
 export default async function handler(req, res) {
     let text = req.query.text;

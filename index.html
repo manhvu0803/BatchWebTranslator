@@ -10,18 +10,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="translate.js"></script>
     
-    <form onsubmit="microsoftTranslate()">
+    <form onsubmit="translate()">
       <div class="input-group">
           <div class="input-group-prepend">
               <span class="input-group-text">Text</span>
           </div>
           <input id="text_input" class="form-control" name="text_input"></input>
           <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" onclick="microsoftTranslate()">Button</button>
+              <button class="btn btn-outline-secondary" type="button" onclick="translate()">Button</button>
           </div>
       </div>
       <label for="temp_input">Temparature</label>
-      <input type="range" class="form-range" name="temp_input" min="0" max="1"></input>
+      <input id="temp_input" type="range" class="form-range" name="temp_input" min="0" max="1"></input>
     </form>
 
     <table class="table">
@@ -46,17 +46,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="microsft_row">
-            <th scope="row">Microsoft Translate</th>
+          <tr id="microsoft_row">
+            <th scope="row">Microsoft</th>
           </tr>
-          <tr id="microsft_row_up">
-            <th scope="row">Microsoft Translate UPPER</th>
+          <tr id="microsoft_row_up">
+            <th scope="row">Microsoft UPPERCASE</th>
           </tr>
           <tr id="gpt_row">
             <th scope="row">ChatGPT 3.5</th>
           </tr>
-          <tr>
-            <th scope="row">ChatGPT 4</th>
+          <tr id="gpt_row_up">
+            <th scope="row">ChatGPT 3.5 UPPERCASE</th>
           </tr>
         </tbody>
       </table>
