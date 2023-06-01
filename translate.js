@@ -72,6 +72,7 @@ async function fetchGpt(text, temp, tone = "serious") {
     }
     
     let response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
         headers: headers,
         body: JSON.stringify(body)
     })
