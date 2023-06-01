@@ -1,6 +1,19 @@
 const langs = ['de', 'en', "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
 
+function registerEvents() {
+    console.log("Load");
+    var input = document.getElementById("text_input");
+    
+    input.addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+            event.preventDefault();
+            document.getElementById("translate_button").click();
+        }
+    });
+}
+
 function translateInput() {
+    console.log("Start translating");
     let input = document.getElementById("text_input").value;
     let temp = document.getElementById("temp_input").value;
     fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate?text=${input}`, "microsoft_row");

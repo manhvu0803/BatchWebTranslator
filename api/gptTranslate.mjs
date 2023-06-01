@@ -51,9 +51,12 @@ async function prompt(text, temp, tone = "serious") {
         temperature: temp ?? 0.5
     });
 
+    console.log("response:");
     console.log(completion.data.choices[0].message.content);
     var result = [];
     var data = JSON.parse(completion.data.choices[0].message.content.match(/{.+}/gs));
+    console.log("parsed data:");
+    console.log(data);
     var translations = data.translations;
 
     for (let lang in translations) {
@@ -62,5 +65,7 @@ async function prompt(text, temp, tone = "serious") {
             to: lang
         });
     }
+
+    console.log("return result");
     return result;
 }
