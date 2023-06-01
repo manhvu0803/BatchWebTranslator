@@ -59,7 +59,7 @@ async function fetchGpt(text, temp, tone = "serious") {
                 }`
             }
         ],
-        temperature: temp ?? 0.5
+        temperature: parseFloat(temp) ?? 0.5
     }
     
     let openAiKey = await fetchGptKey();
