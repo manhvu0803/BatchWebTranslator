@@ -11,7 +11,7 @@ let endpoint = "https://api.cognitive.microsofttranslator.com";
 let location = "eastus2";
 let port = process.env.PORT || 3000;
 
-async function allowCors = fn => async (req, res) => {
+const allowCors = fn => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Origin', '*')
   // another common pattern
@@ -28,7 +28,7 @@ async function allowCors = fn => async (req, res) => {
   return await fn(req, res)
 }
 
-async function handler(req, res) {
+const handler = async (req, res) => {
     let text = req.query.text;
 
     let response = await axios({
@@ -55,4 +55,4 @@ async function handler(req, res) {
     res.send(response.data[0].translations);
 }
 
-export default allowCors(handler)
+module.exports = allowCors(handler)
