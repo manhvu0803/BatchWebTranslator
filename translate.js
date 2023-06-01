@@ -26,7 +26,7 @@ async function fetchTranslation(url, id) {
     outputData(data, id);
 }
 
-async function fetchGpt(text, temp) {
+async function fetchGpt(text, temp, tone = "serious") {
     let body = {
         model: "gpt-3.5-turbo",
         messages: [
