@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 }
 
 async function prompt(text, temp, tone = "serious") {
-    let completion = await openai.createChatCompletion({
+    var request = {
         model: "gpt-3.5-turbo",
         messages: [
             {
@@ -51,7 +51,10 @@ async function prompt(text, temp, tone = "serious") {
             }
         ],
         temperature: temp ?? 0.5
-    });
+    }
+    console.log("request:");
+    console.log(request);
+    let completion = await openai.createChatCompletion(request);
 
     console.log("response:");
     console.log(completion.data.choices[0].message.content);
