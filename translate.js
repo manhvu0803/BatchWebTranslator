@@ -17,14 +17,91 @@ function translateInput() {
     let input = document.getElementById("text_input").value;
     let temp = document.getElementById("temp_input").value;
     fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate?text=${input}`, "microsoft_row");
-    fetchTranslation(`https://microsoft-translate.vercel.app/api/gptTranslate?text=${input}&temp=${temp}`, "gpt_row");
+    fetchGpt();
 }
 
 async function fetchTranslation(url, id) {
-    var row = document.getElementById(id);
-    var rowUpper = document.getElementById(`${id}_up`);
     let response = await fetch(url);
     let data = await response.json();
+    outputData(data, id);
+}
+
+async function fetchGpt() {
+    let body = {
+        model: "gpt-3.5-turbo",
+        messages: [
+            {
+                role: "system",
+                content: "Answer as concisely as possible and no extra information"
+            },
+            {
+                role: "user",
+                content: `Correct any grammar error in this phrase: "${text}", then translate the the corrected phrase into the languages below with a ${tone} tone, keep the "\n" characters and any characters inside <> brackets. format the output like the following
+                {
+                "correction": "",
+                "translations": {
+                "de": "",
+                "en": "",
+                "es": "",
+                "fr": "",
+                "id": "",
+                "it": "",
+                "ja":"",
+                "ko": "",
+                "pt": "",
+                "ru": "",
+                "th": "",
+                "tr": "",
+                "vi": "",
+                "zh-Hans": "",
+                "zh-Hant": "",
+                }
+                }`
+            }
+        ],
+        temperature: temp ?? 0.5
+    }
+
+    let headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "User-Agent": "OpenAI/NodeJS/3.2.1",
+        "Authorization": `Bearer ${process.env.OPENAI_KEY}`,
+    }
+    
+    let response = await fetch("https://api.openai.com/v1/chat/completions", {
+        headers: headers,
+        body: JSON.stringify(body)
+    })
+
+    var data = await response.text();
+    outputData(parseResponse(data), "gpt_row");
+}
+
+
+function parseResponse(data) {
+    var filteredMessage = data.match(/{.+}/gs);
+    console.log("filtered:");
+    console.log(filteredMessage);
+    var message = JSON.parse(filteredMessage);
+    var translations = message.translations;
+    var result = [];
+
+    for (let lang in translations) {
+        result.push({
+            text: translations[lang],
+            to: lang
+        });
+    }
+
+    return result;
+}
+
+function outputData(data, id) {
+    console.log(id);
+    console.log(data);
+    var row = document.getElementById(id);
+    var rowUpper = document.getElementById(`${id}_up`);
 
     let i = 0;
     for (let lang in langs) {
@@ -32,9 +109,6 @@ async function fetchTranslation(url, id) {
         rowUpper.appendChild(getTextCell(`${id}_up_${lang}`, data[i].text.toUpperCase()));
         i++;
     }
-
-    console.log(id);
-    console.log(data);
 }
 
 function getTextCell(id, text) {
