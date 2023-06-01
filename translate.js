@@ -17,7 +17,7 @@ function translateInput() {
     let input = document.getElementById("text_input").value;
     let temp = document.getElementById("temp_input").value;
     fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate?text=${input}`, "microsoft_row");
-    fetchGpt();
+    fetchGpt(input, temp);
 }
 
 async function fetchTranslation(url, id) {
@@ -26,7 +26,7 @@ async function fetchTranslation(url, id) {
     outputData(data, id);
 }
 
-async function fetchGpt() {
+async function fetchGpt(text, temp) {
     let body = {
         model: "gpt-3.5-turbo",
         messages: [
