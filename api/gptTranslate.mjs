@@ -55,14 +55,28 @@ async function prompt(text, temp, tone = "serious") {
         "Authorization": `Bearer ${process.env.OPENAI_KEY}`,
     }
     
-    let response = await axios.post("https://api.openai.com/v1/chat/completions", body, { headers: headers });
+    try {
+        let response = await axios.post("https://api.openai.com/v1/chat/completions", body, { headers: headers });
+        return parseResponse(response);
+    }
+    catch (error) {
+        if (error.data) {
+            console.log(error.data);
+        }
+        else {
+            console.log(error)
+        }
 
+        res.status(500)
+        res.send([]);
+    }
+}
+
+function parseResponse(response) {
     console.log("response:");
     console.log(response);
     var result = [];
     var data = JSON.parse(response.data.choices[0].message.content.match(/{.+}/gs));
-    console.log("parsed data:");
-    console.log(data);
     var translations = data.translations;
 
     for (let lang in translations) {
