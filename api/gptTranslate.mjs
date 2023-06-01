@@ -1,14 +1,9 @@
-import { Configuration, OpenAIApi } from "openai";
+import axios from "axios";
+import * as dotenv from "dotenv"
 
 if (!process.env.OPENAI_KEY) {
     dotenv.config();
 }
-
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
 
 export default async function handler(req, res) {
     console.log(`text: ${req.query.text}`);
@@ -18,12 +13,12 @@ export default async function handler(req, res) {
 }
 
 async function prompt(text, temp, tone = "serious") {
-    var request = {
+    var body = {
         model: "gpt-3.5-turbo",
         messages: [
             {
                 role: "system",
-                content: "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible and no extra information"
+                content: "Answer as concisely as possible and no extra information"
             },
             {
                 role: "user",
@@ -52,14 +47,20 @@ async function prompt(text, temp, tone = "serious") {
         ],
         temperature: temp ?? 0.5
     }
-    console.log("request:");
-    console.log(request);
-    let completion = await openai.createChatCompletion(request);
+
+    let headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "User-Agent": "OpenAI/NodeJS/3.2.1",
+        "Authorization": `Bearer ${process.env.OPENAI_KEY}`,
+    }
+    
+    let response = await axios.post("https://api.openai.com/v1/chat/completions", body, { headers: headers });
 
     console.log("response:");
-    console.log(completion.data.choices[0].message.content);
+    console.log(response);
     var result = [];
-    var data = JSON.parse(completion.data.choices[0].message.content.match(/{.+}/gs));
+    var data = JSON.parse(response.data.choices[0].message.content.match(/{.+}/gs));
     console.log("parsed data:");
     console.log(data);
     var translations = data.translations;
