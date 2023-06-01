@@ -73,11 +73,18 @@ async function prompt(text, temp, tone = "serious") {
 }
 
 function parseResponse(response) {
+    var data = response.data.choices[0];
     console.log("response:");
-    console.log(response);
+    console.log(data);
+    var rawMessage = data.message.content;
+    console.log("raw:");
+    console.log(data);
+    var filteredMessage = rawMessage.match(/{.+}/gs);
+    console.log("filtered:");
+    console.log(filteredMessage);
+    var message = JSON.parse(filteredMessage);
+    var translations = message.translations;
     var result = [];
-    var data = JSON.parse(response.data.choices[0].message.content.match(/{.+}/gs));
-    var translations = data.translations;
 
     for (let lang in translations) {
         result.push({
