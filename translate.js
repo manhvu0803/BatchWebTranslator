@@ -20,6 +20,7 @@ async function microsoftTranslate() {
         cell.innerText = data[i].text.toUpperCase();
         cell.id = `${id}_up_${lang}`;
         rowUpper.appendChild(cell);
+        i++;
     }
 
     console.log(data);
