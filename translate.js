@@ -61,12 +61,14 @@ async function fetchGpt(text, temp, tone = "serious") {
         ],
         temperature: temp ?? 0.5
     }
+    
+    let openAiKey = await fetchGptKey();
 
     let headers = {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
         "User-Agent": "OpenAI/NodeJS/3.2.1",
-        "Authorization": `Bearer ${process.env.OPENAI_KEY}`,
+        "Authorization": `Bearer ${openAiKey}`,
     }
     
     let response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -78,6 +80,11 @@ async function fetchGpt(text, temp, tone = "serious") {
     outputData(parseResponse(data), "gpt_row");
 }
 
+async function fetchGptKey() {
+    let response = await fetch("https://microsoft-translate.vercel.app/api/gptTranslate?key=true")
+    let key = await response.text();
+    return key;
+}
 
 function parseResponse(data) {
     var filteredMessage = data.match(/{.+}/gs);

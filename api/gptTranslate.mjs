@@ -8,8 +8,27 @@ if (!process.env.OPENAI_KEY) {
 export default async function handler(req, res) {
     console.log(`text: ${req.query.text}`);
     console.log(`temp: ${req.query.temp}`);
-    var result = await prompt(req.query.text, req.query.temp)
-    res.send(result);
+
+    if (req.query.key) {
+        res.send(process.env.OPENAI_KEY);
+        return;
+    }
+
+    try {
+        var result = await prompt(req.query.text, req.query.temp);
+        res.send(result);
+    }
+    catch (error) {
+        if (error.data) {
+            console.log(error.data);
+        }
+        else {
+            console.log(error)
+        }
+
+        res.status(500)
+        res.send([]);
+    }
 }
 
 async function prompt(text, temp, tone = "serious") {
@@ -55,21 +74,8 @@ async function prompt(text, temp, tone = "serious") {
         "Authorization": `Bearer ${process.env.OPENAI_KEY}`,
     }
     
-    try {
-        let response = await axios.post("https://api.openai.com/v1/chat/completions", body, { headers: headers });
-        return parseResponse(response);
-    }
-    catch (error) {
-        if (error.data) {
-            console.log(error.data);
-        }
-        else {
-            console.log(error)
-        }
-
-        res.status(500)
-        res.send([]);
-    }
+    let response = await axios.post("https://api.openai.com/v1/chat/completions", body, { headers: headers });
+    return parseResponse(response);
 }
 
 function parseResponse(response) {
