@@ -12,12 +12,12 @@ async function microsoftTranslate() {
     let id = "microsft_row";
     for (let lang in langs) {
         var cell = document.createElement("td");
-        cell.innerText = data[i];
+        cell.innerText = data[i].text;
         cell.id = `${id}_${lang}`;
         row.appendChild(cell);
 
         cell = document.createElement("td");
-        cell.innerText = data[i].toUpper();
+        cell.innerText = data[i].text.toUpperCase();
         cell.id = `${id}_up_${lang}`;
         rowUpper.appendChild(cell);
     }
