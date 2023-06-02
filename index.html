@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Localization tool</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="slider.css" rel="stylesheet">
   </head>
   <body style="padding: 1cm;" onload="registerEvents()">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
@@ -14,32 +15,35 @@
     <script src="gpt.js"></script>
     
     <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Text</span>
-        </div>
-        <textarea id="text_input" class="form-control" name="text_input"></textarea>
-        <div class="input-group-append">
-            <button id="translate_button" class="btn btn-outline-secondary" type="button" onclick="translateInput()">Translate</button>
-        </div>
+        <textarea id="text_input" class="form-control" name="text_input" placeholder="Text to translate..."></textarea>
     </div>
+    <button id="translate_button" class="btn btn-outline-primary" type="button" onclick="translateInput()" style="min-width: 100%;">Translate</button>
     
-    <div style="padding-top: 1em;">
-      <label for="temp_input" id="temp_input_label">Temparature: 0.5</label>
-    </div>
-    <input id="temp_input" type="range" class="form-range" name="temp_input" min="0" max="1" step="0.01" style="max-width: 30%; padding-top: 1em; padding-bottom: 1em;" 
-    oninput="onTempChange(this.value)"></input>
+    <div style="background-color: #fafafa; margin: 1em;">
+      <label for="color_input" data-bs-toggle="tooltip" data-bs-original-title="Replace text in (( ... )) with the &#80color=#...&gt...&lt/color&gt you chose">Replace color: </label>
+      <input type="color" id="color_input" name="color_input" value="#FFDD00"></input>
+      <div style="padding-top: 1em;">
+        <label for="temp_input" id="temp_input_label">Temparature: 0.5</label>
+      </div>
+      <input id="temp_input" type="range" class="form-range" name="temp_input" min="0" max="1" step="0.01" style="max-width: 30%; padding-top: 1em; padding-bottom: 1em; accent-color: black;" 
+      oninput="onTempChange(this.value)"></input>
 
-    <div style="padding-bottom: 3em; padding-top: 1em;">
-      <span>
-        <input type="checkbox" name="error_correcting_input" id="error_correcting_input"></input>
-        <label for="error_correcting_input" data-bs-toggle="tooltip" data-bs-original-title="Make ChatGPT check for error before translating. Increase wait time">Check for error</label>
-      </span>
-      <span style="padding-left: 3em;">
-        <label for="tone_select">Tone:</label>
-        <select name="tone_select" id="tone_select" data-bs-toggle="tooltip" data-bs-original-title="Try to make ChatGPT change the text's tone. Default option is usually faster">
-          <option value="serious">Serious (default)</option>
-        </select>
-      </span>
+      <div style="padding-bottom: 1em; padding-top: 1em;">
+        <span>
+          <input type="checkbox" name="error_correcting_input" id="error_correcting_input"></input>
+          <label for="error_correcting_input" data-bs-toggle="tooltip" data-bs-original-title="Make ChatGPT check for error before translating. Increase wait time">Check for error</label>
+        </span>
+        <span style="padding-left: 3em;">
+          <label for="tone_select">Tone:</label>
+          <select name="tone_select" id="tone_select" data-bs-toggle="tooltip" data-bs-original-title="Try to make ChatGPT change the text's tone. Default option is usually faster">
+            <option value="serious">Serious (default)</option>
+            <option value="casual">Casual</option>
+            <option value="optimistic">Optimistic</option>
+            <option value="pessimistic">Pessimistic</option>
+            <option value="lighthearted">Lighthearted</option>
+          </select>
+        </span>
+      </div>
     </div>
 
     <table class="table table-bordered" style="padding-top: 1em;">
@@ -64,17 +68,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="microsoft_row">
-            <th scope="row">Microsoft</th>
-          </tr>
-          <tr id="microsoft_row_up">
-            <th scope="row">Microsoft UPPERCASE</th>
-          </tr>
           <tr id="gpt_row">
-            <th scope="row">ChatGPT 3.5</th>
+            <th scope="row">ChatGPT 3.5<br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
           </tr>
           <tr id="gpt_row_up">
-            <th scope="row">ChatGPT 3.5 UPPERCASE</th>
+            <th scope="row">ChatGPT 3.5 UPPERCASE<br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+          <tr id="microsoft_row">
+            <th scope="row">Microsoft
+              <br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+          <tr id="microsoft_row_up">
+            <th scope="row">Microsoft UPPERCASE
+              <br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
           </tr>
         </tbody>
       </table>

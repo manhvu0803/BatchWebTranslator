@@ -14,12 +14,13 @@ function translateInput() {
     let needErrorChecking = false;
     outputData(langs, "microsoft_row", null, true);
     outputData(langs, "gpt_row", null, true);
-    let { text, map: textMap } = wrapHtmlTags(input);
+    let { text, map: textMap } = prepocessText(input);
     fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate`, text, "microsoft_row", textMap);    
     processTranslation(fetchGpt(text, temp, tone, needErrorChecking), "gpt_row", textMap);
 }
 
-function wrapHtmlTags(text) {
+function prepocessText(text) {
+    text = replaceColor(text);
     let map = new Map();
     let tags = text.match(/<.*?>/g);
     let code = 999;
@@ -38,10 +39,18 @@ function wrapHtmlTags(text) {
     return {text, map};
 }
 
+function replaceColor(text) {
+    var color = document.getElementById("color_input").value;
+    text = text.replaceAll("((", `<color=${color}>`);
+    text = text.replaceAll("))", `</color>`);
+    return text;
+}
+
 async function fetchTranslation(url, text, id, textMap) {
+    console.log(JSON.stringify({ content: text }));
     let response = await fetch(url, {
         method: "POST",
-        body: JSON.stringify({ content: text })
+        body: text
     });
     processTranslation(response.json(), id, textMap);
 }

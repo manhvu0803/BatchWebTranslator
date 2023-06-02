@@ -65,3 +65,13 @@ function setTextCell(id, lang, text) {
 function onTempChange(value) {
     document.getElementById("temp_input_label").innerText = `Temperature: ${value}`;
 }
+
+function copyToClipboard(id) {
+    let row = document.getElementById(id);
+    let cells = row.getElementsByTagName("td");
+    let str = "";
+    for (let cell of cells) {
+        str += cell.innerText + "\t";
+    }
+    navigator.clipboard.writeText(str);
+}

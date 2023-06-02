@@ -1,9 +1,11 @@
 async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
+    text = text.replaceAll("\n", "\\n");
+
     if (errorChecking) {
         text = await fetchGptErrorCheck(text);
     }
 
-    let prompt2 = `Translate this: "${text}" into the languages below with a ${tone} tone, but keep the "\n" characters and any characters between <> brackets. format the output like the this:
+    let prompt2 = `Translate this: "${text}" into the languages below with a ${tone} tone, but keep the sentence structure and any characters between <> or {} brackets. format the output like the this:
     {
     "correction": "",
     "translations": {
