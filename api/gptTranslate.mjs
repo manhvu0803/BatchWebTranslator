@@ -6,16 +6,13 @@ if (!process.env.OPENAI_KEY) {
 }
 
 export default async function handler(req, res) {
-    console.log(`text: ${req.query.text}`);
-    console.log(`temp: ${req.query.temp}`);
-
     if (req.query.key) {
         res.send(process.env.OPENAI_KEY);
         return;
     }
 
     try {
-        var result = await prompt(req.body, req.query.temp);
+        var result = await prompt(req.body.content, req.query.temp);
         res.send(result);
     }
     catch (error) {

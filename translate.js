@@ -38,10 +38,10 @@ function wrapHtmlTags(text) {
     return {text, map};
 }
 
-async function fetchTranslation(url, body, id, textMap) {
+async function fetchTranslation(url, text, id, textMap) {
     let response = await fetch(url, {
         method: "POST",
-        body: JSON.stringify(body)
+        body: JSON.stringify({ content: text })
     });
     processTranslation(response.json(), id, textMap);
 }
