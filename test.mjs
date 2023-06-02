@@ -4,7 +4,7 @@ import gpt from "./api/gptTranslate.mjs";
 async function runTest(func, name) {
     return await func({
         query: {
-            text: "Hello, kill that zombie for me please"
+            text: "kill the zombie"
         }
     },
     {
@@ -15,5 +15,5 @@ async function runTest(func, name) {
     });
 }
 
-runTest(microsoft, "microsoft");
+//runTest(microsoft, "microsoft");
 runTest(gpt, "gpt");

@@ -11,7 +11,7 @@ let endpoint = "https://api.cognitive.microsofttranslator.com";
 let location = "eastus2";
 
 export default async function handler(req, res) {
-    let text = req.query.text;
+    let text = req.body;
 
     let response = await axios({
         baseURL: endpoint,

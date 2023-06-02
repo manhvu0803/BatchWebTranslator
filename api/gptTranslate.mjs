@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        var result = await prompt(req.query.text, req.query.temp);
+        var result = await prompt(req.body, req.query.temp);
         res.send(result);
     }
     catch (error) {
