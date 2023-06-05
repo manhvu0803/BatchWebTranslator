@@ -33,7 +33,7 @@ function prepocessText(text) {
         let wrapper = `<${code}>`;
         map.set(wrapper, tag);
         text = text.replaceAll(tag, wrapper);
-        code++;
+        code--;
     }
 
     return {text, map};

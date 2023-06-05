@@ -70,8 +70,12 @@ function copyToClipboard(id) {
     let row = document.getElementById(id);
     let cells = row.getElementsByTagName("td");
     let str = "";
+
+    // Convert the output to excel-pastable text
     for (let cell of cells) {
-        str += `"${cell.innerText}"\t`;
+        let text = cell.innerText.replaceAll("\"", "\"\"");
+        str += `"${text}"\t`;
     }
+
     navigator.clipboard.writeText(str);
 }

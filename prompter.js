@@ -1,3 +1,4 @@
+// TODO: Multi-prompt split for long prompt
 async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     text = text.replaceAll("\n", "\\n");
 
