@@ -71,7 +71,7 @@ function copyToClipboard(id) {
     let cells = row.getElementsByTagName("td");
     let str = "";
     for (let cell of cells) {
-        str += cell.innerText + "\t";
+        str += `"${cell.innerText}"\t`;
     }
     navigator.clipboard.writeText(str);
 }
