@@ -15,7 +15,14 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     "es": "",
     "fr": "",
     "id": "",
-    "it": "",
+    "it": ""
+    }
+    }`;
+    
+    let prompt3 = `Translate this: "${text}" into the languages below with a ${tone} tone, but keep the sentence structure and any characters between <> or {} brackets. format the output like the this:
+    {
+    "correction": "",
+    "translations": {
     "ja":"",
     "ko": "",
     "pt": "",
@@ -28,7 +35,7 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     }
     }`;
     
-    let translations = await promptGpt(prompt2, temp);
+    let translations = await Promise.all([promptGpt(prompt2, temp), promptGpt(prompt3, temp)]);
     return parseTranslations(translations);
 }
 
@@ -79,14 +86,17 @@ async function promptGpt(prompt, temp = 0.5) {
 }
 
 function parseTranslations(data) {
-    var translations = data.translations;
     var result = [];
 
-    for (let lang in translations) {
-        result.push({
-            text: translations[lang],
-            to: lang
-        });
+    for (let batch of data)
+    {
+        var translations = batch.translations;
+        for (let lang in translations) {
+            result.push({
+                text: translations[lang],
+                to: lang
+            });
+        }   
     }
 
     return result;

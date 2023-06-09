@@ -27,7 +27,6 @@ export default async function handler(req, res) {
         },
         params: {
             'api-version': '3.0',
-            'from': 'en',
             'to': ['de', 'en', "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"]
         },
         data: [{
