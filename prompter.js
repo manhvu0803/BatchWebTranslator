@@ -93,11 +93,23 @@ function parseTranslations(data) {
         var translations = batch.translations;
         for (let lang in translations) {
             result.push({
-                text: translations[lang],
+                text: sanitizeTranslation(translations[lang]),
                 to: lang
             });
         }   
     }
 
     return result;
+}
+
+function sanitizeTranslation(str) {
+    str = str.replace(`\\"`, `"`).replace(/\\\\u003c/gi, `<`).replace(/\\\\u003e/gi, `>`);
+    var matchResult = str.match(/{.+}/gs);
+
+    if (!matchResult || matchResult.length <= 0) {
+        return str;
+    }
+
+    let data = JSON.parse(matchResult[0]);
+    return data.text ?? data.translation ?? data.translatedText ?? data.translatedtext;
 }
