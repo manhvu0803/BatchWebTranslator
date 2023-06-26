@@ -6,9 +6,10 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
         text = await fetchGptErrorCheck(text);
     }
 
-    let prompt2 = `Translate this: "${text}" into the languages below with a ${tone} tone, but keep the sentence structure and any characters between <> or {} brackets. format the output like the this:
+    let prompt = `Translate this: "${text}" into the languages below with a ${tone} tone, but but keep the sentence structure and anything between <> or {} brackets. Format the output like the this:`
+
+    let prompt2 = `${prompt}
     {
-    "correction": "",
     "translations": {
     "de": "",
     "en": "",
@@ -19,9 +20,8 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     }
     }`;
     
-    let prompt3 = `Translate this: "${text}" into the languages below with a ${tone} tone, but keep the sentence structure and any characters between <> or {} brackets. format the output like the this:
+    let prompt3 = `${prompt}
     {
-    "correction": "",
     "translations": {
     "ja":"",
     "ko": "",
@@ -36,11 +36,11 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     }`;
     
     let translations = await Promise.all([promptGpt(prompt2, temp), promptGpt(prompt3, temp)]);
-    return parseTranslations(translations);
+    return parseTranslations(translations, text);
 }
 
 async function fetchGptErrorCheck(text) {
-    let prompt1 = `Correct any error in this: "${text}", but keep the "\n" characters and any characters between <> brackets. Format the output like this:
+    let prompt1 = `Correct any error in this: "${text}", but keep the sentence structure and any characters between <> brackets. Do not add period to the end if the original doesn't have it. Format the output like this:
     {
         "original": "",
         "corrected": ""
@@ -85,7 +85,7 @@ async function promptGpt(prompt, temp = 0.5) {
     return JSON.parse(content.match(/{.+}/gs)[0]);
 }
 
-function parseTranslations(data) {
+function parseTranslations(data, original) {
     var result = [];
 
     for (let batch of data)
@@ -93,7 +93,7 @@ function parseTranslations(data) {
         var translations = batch.translations;
         for (let lang in translations) {
             result.push({
-                text: sanitizeTranslation(translations[lang]),
+                text: sanitizeTranslation(translations[lang], original),
                 to: lang
             });
         }   
@@ -102,14 +102,24 @@ function parseTranslations(data) {
     return result;
 }
 
-function sanitizeTranslation(str) {
+function sanitizeTranslation(str, original) {
     str = str.replace(`\\"`, `"`).replace(/\\\\u003c/gi, `<`).replace(/\\\\u003e/gi, `>`);
     var matchResult = str.match(/{.+}/gs);
 
-    if (!matchResult || matchResult.length <= 0) {
-        return str;
+    if (matchResult && matchResult.length > 0) {
+        let data = JSON.parse(matchResult[0]);
+        str = data.text ?? data.translation ?? data.translatedText ?? data.translatedtext;
     }
 
-    let data = JSON.parse(matchResult[0]);
-    return data.text ?? data.translation ?? data.translatedText ?? data.translatedtext;
+    matchResult = str.match(/<.*?>/gms);
+
+    if (matchResult && matchResult.length == 1) {
+        str = str.substring(1, str.length - 1);
+    }
+
+    if (str[str.length - 1] == "." && original[original.length - 1] != ".") {
+        str = str.substring(0, str.length - 1)
+    }
+
+    return str;
 }

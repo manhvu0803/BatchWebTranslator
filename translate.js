@@ -56,6 +56,12 @@ async function fetchTranslation(url, text, id, textMap) {
 }
 
 async function processTranslation(promise, id, textMap) {
-    let data = await promise;
-    outputData(data, id, textMap);
+    try {
+        let data = await promise;
+        outputData(data, id, textMap);
+    }
+    catch (e) {
+        alert(`Error: ${e} at ${id}`);
+        console.error(e.stack);
+    }
 }
