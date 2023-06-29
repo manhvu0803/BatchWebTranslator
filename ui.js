@@ -29,7 +29,9 @@ function outputData(data, id, textMap, isLoading = false) {
         }
 
         // Replace encoded names
-        text = replaceText(text, textMap, /(Bob)\d+/g)
+        var regex = new RegExp(`(${nameKey})\\d+`);
+        regex.global = true;
+        text = replaceText(text, textMap, regex);
         
         setTextCell(id, lang, unwrapHtmlTags(text, textMap));
         setTextCell(`${id}_up`, lang, unwrapHtmlTags(text.toUpperCase(), textMap));
