@@ -1,6 +1,7 @@
 // TODO: Multi-prompt split for long prompt
 async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     text = text.replaceAll("\n", "\\n");
+    text = text.replaceAll(`"`, `\\"`);
 
     if (errorChecking) {
         text = await fetchGptErrorCheck(text);
@@ -99,6 +100,7 @@ function parseTranslations(data, original) {
         }   
     }
 
+    // TODO: replace default quotation mark with localized quotation mark
     return result;
 }
 

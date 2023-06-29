@@ -12,10 +12,10 @@ function translateInput() {
     let temp = document.getElementById("temp_input").value;
     let tone = document.getElementById("tone_select").value;
     let needErrorChecking = false;
-    outputData(langs, "microsoft_row", null, true);
+    //outputData(langs, "microsoft_row", null, true);
     outputData(langs, "gpt_row", null, true);
     let { text, map: textMap } = prepocessText(input);
-    fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate`, text, "microsoft_row", textMap);    
+    //fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate`, text, "microsoft_row", textMap);    
     processTranslation(fetchGpt(text, temp, tone, needErrorChecking), "gpt_row", textMap);
 }
 
@@ -23,17 +23,27 @@ function prepocessText(text) {
     text = replaceColor(text);
     let map = new Map();
     let tags = text.match(/<.*?>/g);
-    let code = 999;
 
-    if (!tags) {
-        return {text, map: null};
+    if (tags && tags.length > 0) {
+        let code = 999;
+        for (let tag of tags) {
+            let wrapper = `<${code}>`;
+            map.set(wrapper, tag);
+            text = text.replaceAll(tag, wrapper);
+            code--;
+        }    
     }
 
-    for (let tag of tags) {
-        let wrapper = `<${code}>`;
-        map.set(wrapper, tag);
-        text = text.replaceAll(tag, wrapper);
-        code--;
+    let names = text.match(/"".+?""/g);
+
+    if (names && names.length > 0) {
+        let count = 0;
+        for (let name of names) {
+            let replacer = `Bob${count}`;
+            map.set(replacer, name.substring(2, name.length - 2));
+            text = text.replaceAll(name, replacer);
+            count++;
+        }
     }
 
     return {text, map};

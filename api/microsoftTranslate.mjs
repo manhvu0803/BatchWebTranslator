@@ -12,8 +12,6 @@ let location = "eastus2";
 
 export default async function handler(req, res) {
     let text = req.body;
-    console.log("body");
-    console.log(req.body)
 
     let response = await axios({
         baseURL: endpoint,

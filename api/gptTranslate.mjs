@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        var result = await prompt(req.body.content, req.query.temp);
+        var result = await prompt(req.body, req.query.temp);
         res.send(result);
     }
     catch (error) {
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     }
 }
 
-async function prompt(text, temp, tone = "serious") {
+async function prompt(text, temp, tone = "serious", debug = false) {
     var body = {
         model: "gpt-3.5-turbo",
         messages: [
@@ -72,19 +72,22 @@ async function prompt(text, temp, tone = "serious") {
     }
     
     let response = await axios.post("https://api.openai.com/v1/chat/completions", body, { headers: headers });
-    return parseResponse(response);
+    return parseResponse(response, debug);
 }
 
-function parseResponse(response) {
+function parseResponse(response, debug) {
     var data = response.data.choices[0];
-    console.log("response:");
-    console.log(data);
+
     var rawMessage = data.message.content;
-    console.log("raw:");
-    console.log(data);
     var filteredMessage = rawMessage.match(/{.+}/gs)[0];
-    console.log("filtered:");
-    console.log(filteredMessage);
+
+    if (debug) {
+        console.log("raw:");
+        console.log(data);
+        console.log("filtered:");
+        console.log(filteredMessage);
+    }
+    
     var message = JSON.parse(filteredMessage);
     var translations = message.translations;
     var result = [];
@@ -96,6 +99,5 @@ function parseResponse(response) {
         });
     }
 
-    console.log("return result");
     return result;
 }

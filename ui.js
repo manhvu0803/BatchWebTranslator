@@ -27,6 +27,9 @@ function outputData(data, id, textMap, isLoading = false) {
             text = "Loading...";
             lang = trans;
         }
+
+        // Replace encoded names
+        text = replaceText(text, textMap, /(Bob)\d+/g)
         
         setTextCell(id, lang, unwrapHtmlTags(text, textMap));
         setTextCell(`${id}_up`, lang, unwrapHtmlTags(text.toUpperCase(), textMap));
@@ -35,14 +38,18 @@ function outputData(data, id, textMap, isLoading = false) {
 }
 
 function unwrapHtmlTags(text, textMap) {
-    let tags = text.match(/<.*?>/g);
+    return replaceText(text, textMap, /<.*?>/g);
+}
 
-    if (!tags || !textMap) {
+function replaceText(text, textMap, regex) {
+    let matches = text.match(regex);
+
+    if (!matches || !textMap) {
         return text;
     }
 
-    for (let tag of tags) {
-        text = text.replaceAll(tag, textMap.get(tag));
+    for (let match of matches) {
+        text = text.replaceAll(match, textMap.get(match));
     }
 
     return text;
