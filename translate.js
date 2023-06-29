@@ -34,7 +34,7 @@ function prepocessText(text) {
         }    
     }
 
-    let names = text.match(/"".+?""/g);
+    let names = text.match(/--.+?--/g);
 
     if (names && names.length > 0) {
         let count = 0;
