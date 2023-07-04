@@ -15,7 +15,7 @@ function translateInput() {
     let tone = document.getElementById("tone_select").value;
     let needErrorChecking = false;
     //outputData(langs, "microsoft_row", null, true);
-    outputData(langs, "gpt_row", null, true);
+    outputData(langs, "gpt_row", null, "Loading...");
     let { text, map: textMap } = prepocessText(input);
     //fetchTranslation(`https://microsoft-translate.vercel.app/api/microsoftTranslate`, text, "microsoft_row", textMap);    
     processTranslation(fetchGpt(text, temp, tone, needErrorChecking), "gpt_row", textMap);
@@ -73,7 +73,8 @@ async function processTranslation(promise, id, textMap) {
         outputData(data, id, textMap);
     }
     catch (e) {
-        alert(`Error: ${e} at ${id}`);
         console.error(e.stack);
+        outputData(langs, id, null, "Error");
+        alert(`Error: ${e.message ?? e} at ${id}`);
     }
 }

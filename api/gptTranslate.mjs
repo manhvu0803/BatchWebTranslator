@@ -1,11 +1,16 @@
 import axios from "axios";
 import * as dotenv from "dotenv"
+import authorize from "../authorization.mjs"
 
 if (!process.env.OPENAI_KEY) {
     dotenv.config();
 }
 
 export default async function handler(req, res) {
+    if (!authorize(req, res)) {
+        return;
+    }
+    
     if (req.query.key) {
         res.send(process.env.OPENAI_KEY);
         return;

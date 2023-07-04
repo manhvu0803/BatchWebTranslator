@@ -1,3 +1,5 @@
+const SinglePromptLimit = 25;
+
 // TODO: Multi-prompt split for long prompt
 async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     text = text.replaceAll("\n", "\\n");
@@ -9,6 +11,52 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
 
     let prompt = `Translate this: "${text}" into the languages below with a ${tone} tone, but but keep the sentence structure and anything between <> or {} brackets. Format the output like the this:`
 
+    if (text.length <= SinglePromptLimit) {
+        return fetchSinglePrompt(prompt, temp, text);
+    }
+    else {
+        return fetchMultiPrompt(prompt, temp, text);
+    }
+}
+
+async function fetchGptErrorCheck(text) {
+    let prompt1 = `Correct any error in this: "${text}", but keep the sentence structure and any characters between <> brackets. Do not add period to the end if the original doesn't have it. Format the output like this:
+    {
+        "original": "",
+        "corrected": ""
+    }`;
+
+    let data = await promptGpt(prompt1, temp);
+    return data.corrected;
+}
+
+async function fetchSinglePrompt(prompt, temp, ogText) {
+    let prompt2 = `${prompt}
+    {
+        "translations": {
+            "de": "",
+            "en": "",
+            "es": "",
+            "fr": "",
+            "id": "",
+            "it": "",
+            "ja":"",
+            "ko": "",
+            "pt": "",
+            "ru": "",
+            "th": "",
+            "tr": "",
+            "vi": "",
+            "zh-Hans": "",
+            "zh-Hant": ""
+        }
+    }`;
+
+    let translations = await promptGpt(prompt2, temp);
+    return parseTranslations(translations, ogText);
+}
+
+async function fetchMultiPrompt(prompt, temp, ogText) {
     let prompt2 = `${prompt}
     {
     "translations": {
@@ -37,18 +85,7 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     }`;
     
     let translations = await Promise.all([promptGpt(prompt2, temp), promptGpt(prompt3, temp)]);
-    return parseTranslations(translations, text);
-}
-
-async function fetchGptErrorCheck(text) {
-    let prompt1 = `Correct any error in this: "${text}", but keep the sentence structure and any characters between <> brackets. Do not add period to the end if the original doesn't have it. Format the output like this:
-    {
-        "original": "",
-        "corrected": ""
-    }`;
-
-    let data = await promptGpt(prompt1, temp);
-    return data.corrected;
+    return parseTranslations(translations, ogText);
 }
 
 async function promptGpt(prompt, temp = 0.5) {    
@@ -81,6 +118,11 @@ async function promptGpt(prompt, temp = 0.5) {
     })
 
     let data = await response.json();
+
+    if (data.error) {
+        throw new Error(data.error.message);
+    }
+
     let content = data.choices[0].message.content;
     console.log(content);
     return JSON.parse(content.match(/{.+}/gs)[0]);
@@ -89,22 +131,32 @@ async function promptGpt(prompt, temp = 0.5) {
 function parseTranslations(data, original) {
     var result = [];
 
-    for (let batch of data)
-    {
-        var translations = batch.translations;
-        for (let lang in translations) {
-            result.push({
-                text: sanitizeTranslation(translations[lang], original),
-                to: lang
-            });
-        }   
+    if (Array.isArray(data)) {
+        for (let batch of data) {
+            result.concat(parseBatchTranslation(batch, original));
+        }
+    }
+    else {
+        result = parseBatchTranslation(data, original);
     }
 
-    // TODO: replace default quotation mark with localized quotation mark
     return result;
 }
 
+function parseBatchTranslation(batch, original) {
+    let result = [];
+    var translations = batch.translations;
+    for (let lang in translations) {
+        result.push({
+            text: sanitizeTranslation(translations[lang], original),
+            to: lang
+        });
+    }
+    return result; 
+}
+
 function sanitizeTranslation(str, original) {
+    // TODO: replace default quotation mark with localized quotation mark
     str = str.replace(`\\"`, `"`).replace(/\\\\u003c/gi, `<`).replace(/\\\\u003e/gi, `>`);
     var matchResult = str.match(/{.+}/gs);
 

@@ -20,22 +20,23 @@ function addEvent() {
     });
 }
 
-function outputData(data, id, textMap, isLoading = false) {
+function outputData(data, id, textMap, filler = null) {
     let i = 0;
     for (let trans of data) {
         let text = trans.text;
         let lang = trans.to;
 
-        if (isLoading) {
-            text = "Loading...";
+        if (filler) {
+            text = filler.toString();
             lang = trans;
         }
+        else {            
+            // Replace encoded names
+            var regex = new RegExp(`(${nameKey})\\d+`);
+            regex.global = true;
+            text = replaceText(text, textMap, regex);
+        }
 
-        // Replace encoded names
-        var regex = new RegExp(`(${nameKey})\\d+`);
-        regex.global = true;
-        text = replaceText(text, textMap, regex);
-        
         setTextCell(id, lang, unwrapHtmlTags(text, textMap));
         setTextCell(`${id}_up`, lang, unwrapHtmlTags(text.toUpperCase(), textMap));
         i++;
