@@ -133,7 +133,7 @@ function parseTranslations(data, original) {
 
     if (Array.isArray(data)) {
         for (let batch of data) {
-            result.concat(parseBatchTranslation(batch, original));
+            result = result.concat(parseBatchTranslation(batch, original));
         }
     }
     else {
