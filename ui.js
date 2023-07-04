@@ -2,19 +2,22 @@ var openAiKey = "";
 
 async function registerEvents() {
     console.log("Load");
-    var input = document.getElementById("text_input");
-    
-    // input.addEventListener("keypress", (event) => {
-    //     if (event.key == "Enter") {
-    //         event.preventDefault();
-    //         document.getElementById("translate_button").click();
-    //     }
-    // });
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
 
     openAiKey = await fetchGptKey();
+}
+
+function addEvent() {
+    var input = document.getElementById("text_input");
+    
+    input.addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+            event.preventDefault();
+            document.getElementById("translate_button").click();
+        }
+    });
 }
 
 function outputData(data, id, textMap, isLoading = false) {
@@ -79,10 +82,18 @@ function copyToClipboard(id) {
     let row = document.getElementById(id);
     let cells = row.getElementsByTagName("td");
     let str = "";
+    let copyForExcel = document.getElementById("for_excel_input").checked;
 
     // Convert the output to excel-pastable text
     for (let cell of cells) {
-        let text = cell.innerText.replaceAll("\"", "\"\"");
+        let text = cell.innerText;
+        let start = text[0];
+        
+        if (copyForExcel && (start == "=" || start == "+" || start == "-" || start == "*" || start == "/")) {
+            text = "'" + text;
+        }
+
+        text = text.replaceAll("\"", "\"\"");
         str += `"${text}"\t`;
     }
 
