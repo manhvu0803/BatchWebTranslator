@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import * as dotenv from 'dotenv';
-import authorize from "../authorization.mjs"
 
 if (!process.env.MICROSOFT_KEY) {
     dotenv.config();
@@ -12,10 +11,6 @@ let endpoint = "https://api.cognitive.microsofttranslator.com";
 let location = "eastus2";
 
 export default async function handler(req, res) {
-    if (!authorize(req, res)) {
-        return;
-    }
-    
     let text = req.body;
 
     let response = await axios({

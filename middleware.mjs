@@ -1,13 +1,15 @@
-export default function(req, res) {
+export default function middleware(req) {
+    let url = new URL(req.url);
     let ip = req.getHeader("x-forwarded-for");
     let allowList = process.env.ALLOW_LIST;
     
     if (!allowList || !allowList.includes(ip)) {
         console.error(`Client ${ip} is not allowed in this service`);
-        res.status(403);
-        res.send("You do not have access to this service");
-        return false;
+        url.pathname = "/blocked.html"
+    }
+    else {
+        url.pathname = "/index.html";
     }
 
-    return true;
+    return Response.redirect(url)
 }
