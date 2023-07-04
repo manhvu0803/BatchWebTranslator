@@ -2,10 +2,10 @@ import { ipAddress, rewrite } from '@vercel/edge';
 
 let allowList = [
     "::1",
-    "162\.158\.189\.",
-    "162\.158\.190\.",
-    "162\.158\.179\.",
-    "1.53.255.144"
+    "162.158.189.",
+    "162.158.190.",
+    "162.158.179.",
+    "1.53.255."
 ]
 
 export default function middleware(req) {
