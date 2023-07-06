@@ -1,6 +1,6 @@
 const langs = ['de', 'en', "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
 
-const nameKey = "aptx348f";
+const nameKey = "a25ptx";
 
 async function fetchGptKey() {
     let response = await fetch("https://microsoft-translate.vercel.app/api/gptTranslate?key=true")
@@ -42,7 +42,9 @@ function prepocessText(text) {
         let count = 0;
         for (let name of names) {
             let replacer = `${nameKey}${count}`;
-            map.set(replacer, name.substring(2, name.length - 2));
+            let str = name.substring(2, name.length - 2);
+            map.set(replacer, str);
+            map.set(`<${replacer}>`, str);
             text = text.replaceAll(name, replacer);
             count++;
         }

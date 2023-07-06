@@ -170,7 +170,7 @@ function sanitizeTranslation(str, original) {
         }
     }
 
-    matchResult = str.match(/<.*?>/gms);
+    matchResult = str.match(/^<.*?>$/gms);
 
     if (matchResult && matchResult.length == 1) {
         str = str.substring(1, str.length - 1);

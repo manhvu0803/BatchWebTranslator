@@ -32,7 +32,7 @@ function outputData(data, id, textMap, filler = null) {
         }
         else {            
             // Replace encoded names
-            var regex = new RegExp(`(${nameKey})\\d+`);
+            var regex = new RegExp(`<?(${nameKey})\\d+>?`);
             regex.global = true;
             text = replaceText(text, textMap, regex);
         }
