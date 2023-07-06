@@ -1,6 +1,6 @@
 const langs = ['de', 'en', "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
 
-const nameKey = "f009348f";
+const nameKey = "aptx348f";
 
 async function fetchGptKey() {
     let response = await fetch("https://microsoft-translate.vercel.app/api/gptTranslate?key=true")
