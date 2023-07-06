@@ -161,8 +161,13 @@ function sanitizeTranslation(str, original) {
     var matchResult = str.match(/{.+}/gs);
 
     if (matchResult && matchResult.length > 0) {
-        let data = JSON.parse(matchResult[0]);
-        str = data.text ?? data.translation ?? data.translatedText ?? data.translatedtext;
+        try {
+            let data = JSON.parse(matchResult[0]);
+            str = data.text ?? data.translation ?? data.translatedText ?? data.translatedtext;   
+        }
+        catch (err) {
+            console.log(`Cannot parsed the string ${matchResult[0]}`);
+        }
     }
 
     matchResult = str.match(/<.*?>/gms);
