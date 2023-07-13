@@ -1,4 +1,4 @@
-const langs = ['de', 'en', "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
+const langs = ["de", "en", "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
 
 const nameKey = "a25ptx";
 
@@ -13,7 +13,7 @@ function translateInput() {
     let input = document.getElementById("text_input").value;
     let temp = document.getElementById("temp_input").value;
     let tone = document.getElementById("tone_select").value;
-    let needErrorChecking = false;
+    let needErrorChecking = document.getElementById("error_correcting_input").checked;
     //outputData(langs, "microsoft_row", null, true);
     outputData(langs, "gpt_row", null, "Loading...");
     let { text, map: textMap } = prepocessText(input);

@@ -6,101 +6,90 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     text = text.replaceAll(`"`, `\\"`);
 
     if (errorChecking) {
-        text = await fetchGptErrorCheck(text);
+        text = await fetchGptErrorCheck(text, temp);
     }
 
-    let prompt = `Translate this: "${text}" into the languages below with a ${tone} tone, but but keep the sentence structure and anything between <> or {} brackets. Format the output like the this:`
+    //let prompt = `Translate this: "${text}" into the languages below with a ${tone} tone, but but keep the sentence structure and anything between <> or {} brackets. Format the output like the this:`
 
     if (text.length <= SinglePromptLimit) {
-        return fetchSinglePrompt(prompt, temp, text);
+        return fetchSinglePrompt(text, temp, tone);
     }
     else {
-        return fetchMultiPrompt(prompt, temp, text);
+        return fetchMultiPrompt(text, temp, tone);
     }
 }
 
-async function fetchGptErrorCheck(text) {
-    let prompt1 = `Correct any error in this: "${text}", but keep the sentence structure and any characters between <> brackets. Do not add period to the end if the original doesn't have it. Format the output like this:
-    {
-        "original": "",
-        "corrected": ""
-    }`;
-
-    let data = await promptGpt(prompt1, temp);
+async function fetchGptErrorCheck(text, temp) {
+    let messages = [
+        {
+            role: "system",
+            content: `The user will give you a text` 
+            + ` You will try to correct grammar and type errors if possible. `
+            + ` Do not change things inside <> and escape characters`
+            + ` Then give the output in JSON format like this: `
+            + `{"original":"original-text,"corrected":"corrected-text"}`
+        },
+        {
+            role: "user",
+            content: JSON.stringify(text)
+        }
+    ];
+        
+    let data = await parseAndPromptGpt(messages, temp);
+    console.log(data);
     return data.corrected;
 }
 
-async function fetchSinglePrompt(prompt, temp, ogText) {
-    let prompt2 = `${prompt}
-    {
-        "translations": {
-            "de": "",
-            "en": "",
-            "es": "",
-            "fr": "",
-            "id": "",
-            "it": "",
-            "ja":"",
-            "ko": "",
-            "pt": "",
-            "ru": "",
-            "th": "",
-            "tr": "",
-            "vi": "",
-            "zh-Hans": "",
-            "zh-Hant": ""
+async function fetchSinglePrompt(text, temp, tone) {
+    let prompt = {
+        text: text,
+        tone: tone,
+        languages: ["de", "en", "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"]
+    };
+
+    let translations = await promptTranslateGpt(prompt, temp);
+    return parseTranslations(translations, text);
+}
+
+async function fetchMultiPrompt(text, temp, tone) {
+    let prompt1 = {
+        text: text,
+        tone: tone,
+        languages: ["de", "en", "es", "fr", "id", "it", "ja", "ko"]
+    };
+
+    let prompt2 = {
+        text: text,
+        tone: tone,
+        languages: ["en", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"]
+    };
+    
+    let translations = await Promise.all([promptTranslateGpt(prompt1, temp), promptTranslateGpt(prompt2, temp)]);
+    return parseTranslations(translations, text);
+}
+
+function promptTranslateGpt(prompt, temp = 0.5) {
+    let messages = [
+        {
+            role: "system",
+            content: `The user will give you a text, a tone for translating and a list of languages, delimited by JSON format.` 
+            + ` You will translate it into the provided languages, do not translate things inside <>, keep intact the sentence structure and escape characters.`
+            + ` Then give the output in JSON format like this: `
+            + `{"translations":{"languages-code":"translation"}}`
+        },
+        {
+            role: "user",
+            content: JSON.stringify(prompt)
         }
-    }`;
+    ];
 
-    let translations = await promptGpt(prompt2, temp);
-    return parseTranslations(translations, ogText);
+    return parseAndPromptGpt(messages, temp)
 }
 
-async function fetchMultiPrompt(prompt, temp, ogText) {
-    let prompt2 = `${prompt}
-    {
-    "translations": {
-    "de": "",
-    "en": "",
-    "es": "",
-    "fr": "",
-    "id": "",
-    "it": ""
-    }
-    }`;
-    
-    let prompt3 = `${prompt}
-    {
-    "translations": {
-    "ja":"",
-    "ko": "",
-    "pt": "",
-    "ru": "",
-    "th": "",
-    "tr": "",
-    "vi": "",
-    "zh-Hans": "",
-    "zh-Hant": ""
-    }
-    }`;
-    
-    let translations = await Promise.all([promptGpt(prompt2, temp), promptGpt(prompt3, temp)]);
-    return parseTranslations(translations, ogText);
-}
-
-async function promptGpt(prompt, temp = 0.5) {    
+async function parseAndPromptGpt(messages, temp = 0.5) {    
     let body = {
         model: "gpt-3.5-turbo",
-        messages: [
-            {
-                role: "system",
-                content: "Answer as concisely as possible and no extra information"
-            },
-            {
-                role: "user",
-                content: prompt
-            }
-        ],
+        messages: messages,
         temperature: parseFloat(temp) ?? 0.5
     }
     
@@ -160,7 +149,7 @@ function sanitizeTranslation(str, original) {
     str = str.replace(`\\"`, `"`).replace(/\\\\u003c/gi, `<`).replace(/\\\\u003e/gi, `>`);
     var matchResult = str.match(/{.+}/gs);
 
-    if (matchResult && matchResult.length > 0) {
+    if (matchResult && matchResult.length > 0 && matchResult[0].length > 3) {
         try {
             let data = JSON.parse(matchResult[0]);
             str = data.text ?? data.translation ?? data.translatedText ?? data.translatedtext;   

@@ -3,22 +3,36 @@
   <head></head>
   <body>
     <script type="module" src="https://md-block.verou.me/md-block.js"></script>
-    <md-block style="font-family: monospace; padding: 10%;">
-# All
+    <div style="padding-left: 20%;">
+      <md-block style="font-family: monospace;">
+# How to Use
+Type any text in any language into the text box and click Translate to start translating
+<br/>
+Once the translating is done, clicked Copy text to copy all the translated sentences, delimited by tab
+<br/>
+Then paste into any text editor of your choice
+# Options
+## Copy for Excel
+Make the copied text readable by Excel, WPS and other spreadsheet editors
+<br/>
+Uncheck this if you are copying the translation directly into a raw text file
 ## HTML tags
-This tool support all html tags (`<em>`, `<color>`, `<i>`, etc.)
-## Quick color
+You can use any html tags (`<em>`, `<color>`, `<i>`, etc.) in the text
+## Quick coloring
 Use 2 brackets: ((text)) to insert color tag around the text. The tag color is the one you choose in Replace color
 ## Untranslate phrase
-Use 2 minus: `--text--` to mark parts as ignored when translating
-
+Use 2 minus signs: `--text--` to mark parts as ignored when translating
+<br/>
+<br/>
+<br/>
 # GPT specific
 ## Temperature
-Change chatGPT setting (0 means less risk-taking and more stable translation and vice versa)
+Change chatGPT setting (0 means less risk-taking and more stable translation, 1 means more random translation)
 ## Tone
 Try to influence chatGPT choice of words. Might change the sentence meaning
 ## Error 
 Make chatGPT check for errors and correct them before translating. Usually take twice the time to translate
-    </md-block>
+      </md-block>
+    </div>
   </body>
 </html>
