@@ -1,4 +1,6 @@
-const langs = ["de", "en", "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"];
+const langs = ["de", "en", "es", "fr", "id", "it", "jp", "kr", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant", "ar", "hi"];
+const langNames = ["German", "English", "Spanish", "French", "Indonesian", "Italian", "Japanese", "Korean", "Portugese", "Russian", "Thais", "Turkish", "Vietnamese", "Chinese (simple)", "Chinese (tradition)", "Arabic", "Hindi"];
+var langEnabled = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false];
 
 const nameKey = "a25ptx";
 
@@ -6,6 +8,18 @@ async function fetchGptKey() {
     let response = await fetch("https://microsoft-translate.vercel.app/api/gptTranslate?key=true")
     let key = await response.text();
     return key;
+}
+
+function flipEnableLang(lang) {
+    let index = langs.indexOf(lang);
+
+    if (index < 0) {
+        return;
+    }
+
+    langEnabled[index] = !langEnabled[index];
+    localStorage.setItem("enabledLanguages", JSON.stringify(langEnabled));
+    resetLanguageRow();
 }
 
 function translateInput() {

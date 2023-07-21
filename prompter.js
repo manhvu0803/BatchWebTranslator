@@ -44,7 +44,7 @@ async function fetchSinglePrompt(text, temp, tone) {
     let prompt = {
         text: text,
         tone: tone,
-        languages: ["de", "en", "es", "fr", "id", "it", "ja", "ko", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"]
+        languages: langs
     };
 
     let translations = await promptTranslateGpt(prompt, temp);
@@ -55,13 +55,13 @@ async function fetchMultiPrompt(text, temp, tone) {
     let prompt1 = {
         text: text,
         tone: tone,
-        languages: ["de", "en", "es", "fr", "id", "it", "ja", "ko"]
+        languages: langs.slice(0, langs.length / 2)
     };
 
     let prompt2 = {
         text: text,
         tone: tone,
-        languages: ["en", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant"]
+        languages:  langs.slice(langs.length / 2)
     };
     
     let translations = await Promise.all([promptTranslateGpt(prompt1, temp), promptTranslateGpt(prompt2, temp)]);

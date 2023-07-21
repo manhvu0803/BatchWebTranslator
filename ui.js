@@ -1,12 +1,18 @@
 var openAiKey = "";
 
-async function registerEvents() {
+function registerEvents() {
     console.log("Load");
-
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+    
+    langEnabled = JSON.parse(localStorage.getItem("enabledLanguages")) ?? langEnabled;
+    
+    for (let i = 0; i < langs.length; ++i) {
+        document.getElementById(`${langs[i]}_checkbox`).checked = langEnabled[i];
+    }
 
-    openAiKey = await fetchGptKey();
+    resetLanguageRow();
+    fetchGptKey().then((key) => openAiKey = key);
 }
 
 function addEvent() {
@@ -61,7 +67,32 @@ function replaceText(text, textMap, regex) {
     return text;
 }
 
+function resetLanguageRow() {
+    let row = document.getElementById("language_row");
+    row.replaceChildren();
+    let cell = createCell("#");
+    cell.classList.add("w-25");
+    row.appendChild(cell);
+
+    for (let i = 0; i < langs.length; ++i) {
+        if (langEnabled[i]) {
+            row.appendChild(createCell(langNames[i]));
+        }
+    }
+}
+
+function createCell(text) {
+    let cell = document.createElement("th");
+    cell.scope = "col";
+    cell.textContent = text;
+    return cell;
+}
+
 function setTextCell(id, lang, text) {
+    if (!langEnabled[langs.indexOf(lang)]) {
+        return;
+    }
+
     var cell = document.getElementById(`${id}_${lang}`);
 
     if (!cell) {

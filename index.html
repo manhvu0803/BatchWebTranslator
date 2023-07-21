@@ -24,8 +24,118 @@
         <a href="README.html" target="_blank">How to use</a>
       </div>
 
+      <div class="dropdown" style="padding-bottom: 1em;">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Languages
+        </button>
+        <div class="dropdown-menu" id="language_dropdown_menu">
+          <div>
+            <input type="checkbox" class="form-check-input" id="de_checkbox" onchange="flipEnableLang(`de`)" name="german_checkbox" checked></input>
+            <label class="form-check-label" for="german_checkbox">
+              German
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="en_checkbox" onchange="flipEnableLang(`en`)" name="english_checkbox" checked></input>
+            <label class="form-check-label" for="english_checkbox">
+              English
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="es_checkbox" onchange="flipEnableLang(`es`)" name="spanish_checkbox" checked></input>
+            <label class="form-check-label" for="spanish_checkbox">
+              Spanish
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="fr_checkbox" onchange="flipEnableLang(`fr`)" name="french_checkbox" checked></input>
+            <label class="form-check-label" for="french_checkbox">
+              French
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="id_checkbox" onchange="flipEnableLang(`id`)" name="indonesian_checkbox" checked></input>
+            <label class="form-check-label" for="indonesian_checkbox">
+              Indonesian
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="it_checkbox" onchange="flipEnableLang(`it`)" name="italian_checkbox" checked></input>
+            <label class="form-check-label" for="italian_checkbox">
+              Italian
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="jp_checkbox" onchange="flipEnableLang(`jp`)" name="japan_checkbox" checked></input>
+            <label class="form-check-label" for="japan_checkbox">
+              Japan
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="kr_checkbox" onchange="flipEnableLang(`kr`)" name="korean_checkbox" checked></input>
+            <label class="form-check-label" for="korean_checkbox">
+              Korean
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="pt_checkbox" onchange="flipEnableLang(`pt`)" name="portugese_checkbox" checked></input>
+            <label class="form-check-label" for="portugese_checkbox">
+              Portugese
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="ru_checkbox" onchange="flipEnableLang(`ru`)" name="russian_checkbox" checked></input>
+            <label class="form-check-label" for="russian_checkbox">
+              Russian
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="th_checkbox" onchange="flipEnableLang(`th`)" name="thais_checkbox" checked></input>
+            <label class="form-check-label" for="thais_checkbox">
+              Thais
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="tr_checkbox" onchange="flipEnableLang(`tr`)" name="turkish_checkbox" checked></input>
+            <label class="form-check-label" for="turkish_checkbox">
+              Turkish
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="vi_checkbox" onchange="flipEnableLang(`vi`)" name="vietnamese_checkbox" checked></input>
+            <label class="form-check-label" for="vietnamese_checkbox">
+              Vietnamese
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="zh-Hans_checkbox" onchange="flipEnableLang(`zh-Hans`)" name="chinese_simple_checkbox" checked></input>
+            <label class="form-check-label" for="chinese_simple_checkbox">
+              Chinese (simple)
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="zh-Hant_checkbox" onchange="flipEnableLang(`zh-Hant`)" name="chinese_tradition_checkbox" checked></input>
+            <label class="form-check-label" for="chinese_tradition_checkbox">
+              Chinese (tradition)
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="ar_checkbox" onchange="flipEnableLang(`ar`)" name="arabic_checkbox" checked></input>
+            <label class="form-check-label" for="arabic_checkbox">
+              Arabic
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="hi_checkbox" onchange="flipEnableLang(`hi`)" name="hindi_checkbox" checked></input>
+            <label class="form-check-label" for="hindi_checkbox">
+              Hindi
+            </label>
+          </div>
+        </div>
+      </div>
+  
       <div style="padding-bottom: 0.75em;">
-        <input type="checkbox" name="for_excel_input" id="for_excel_input" checked></input>
+        <input type="checkbox" class="form-check-input" name="for_excel_input" id="for_excel_input" checked></input>
         <label for="for_excel_input" data-bs-toggle="tooltip" data-bs-original-title="Check this if you are copying and pasting this text into Excel, WPS or any spreadsheet editor">
           Copy for Excel/WPS/.etc
         </label>
@@ -42,7 +152,7 @@
 
       <div style="padding-bottom: 1em; padding-top: 1em;">
         <span>
-          <input type="checkbox" name="error_correcting_input" id="error_correcting_input"></input>
+          <input type="checkbox" class="form-check-input" name="error_correcting_input" id="error_correcting_input"></input>
           <label for="error_correcting_input" data-bs-toggle="tooltip" data-bs-original-title="Make ChatGPT check for error before translating. Increase wait time">Check for error</label>
         </span>
         <span style="padding-left: 3em;">
@@ -60,23 +170,7 @@
 
     <table class="table table-bordered" style="padding-top: 1em;">
         <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">German</th>
-            <th scope="col">English</th>
-            <th scope="col">Spanish</th>
-            <th scope="col">French</th>
-            <th scope="col">Indonesian</th>
-            <th scope="col">Italian</th>
-            <th scope="col">Japan</th>
-            <th scope="col">Korean</th>
-            <th scope="col">Portugese</th>
-            <th scope="col">Russian</th>
-            <th scope="col">Thais</th>
-            <th scope="col">Turkish</th>
-            <th scope="col">Vietnamese</th>
-            <th scope="col">Chinese &#40simple&#41</th>
-            <th scope="col">Chinese &#40tradition&#41</th>
+          <tr id="language_row">
           </tr>
         </thead>
         <tbody>
@@ -116,5 +210,6 @@
           </tr>
         </tbody>
       </table>
+      
   </body>
 </html>
