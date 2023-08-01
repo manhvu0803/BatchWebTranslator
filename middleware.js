@@ -5,7 +5,9 @@ let allowList = [
     "162.158.189.",
     "162.158.190.",
     "162.158.179.",
-    "1.53.255."
+    "1.53.255.",
+    // Huy
+    "113.173.34."
 ]
 
 export default function middleware(req) {
