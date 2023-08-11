@@ -23,8 +23,8 @@ export default function middleware(req) {
     let secret = process.env?.SECRET ?? "a8698a6982bc1";
 
     if (cookie !== secret && !isAllow(ip)) {
-        console.error(`Client ${ip} is not allowed in this service`);
-        return new Response(`<h1>You do not have access to this page</h1> <h2>Your IP is ${ip}</h2>`, {
+        console.error(`Client ${ip} is not allowed in this service or cookie is not valid (${cookie} != ${secret})`);
+        return new Response(`<h1>You do not have access to this page or your session has expired</h1> <h2>Your IP is ${ip}</h2>`, {
             headers: { 'content-type': 'text/html' },
         })
     }
