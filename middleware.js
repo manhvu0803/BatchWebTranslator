@@ -13,7 +13,7 @@ let allowList = [
     "113.173.34.",
     // Nha Trang
     // This is temporary, should have cookie later
-    "113.160.248."
+    "113.160.248.",
     "58.187.141."
 ]
 
