@@ -14,6 +14,7 @@ let allowList = [
     // Nha Trang
     // This is temporary, should have cookie later
     "113.160.248."
+    "58.187.141."
 ]
 
 export default function middleware(req) {
