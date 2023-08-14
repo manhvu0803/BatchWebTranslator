@@ -24,14 +24,14 @@ async function fetchGptErrorCheck(text, temp) {
         {
             role: "system",
             content: `The user will give you a text` 
-            + ` You will try to correct grammar and type errors if possible. `
+            + ` You will try to correct grammar and typo if possible. `
             + ` Do not change things inside <> and escape characters`
             + ` Then give the output in JSON format like this: `
-            + `{"original":"original-text,"corrected":"corrected-text"}`
+            + `{"original":"original-text","corrected":"corrected-text"}`
         },
         {
             role: "user",
-            content: JSON.stringify(text)
+            content: text
         }
     ];
         
