@@ -1,5 +1,5 @@
-const langs = ["de", "en", "es", "fr", "id", "it", "jp", "kr", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant", "ar", "hi"];
-const langNames = ["German", "English", "Spanish", "French", "Indonesian", "Italian", "Japanese", "Korean", "Portugese", "Russian", "Thais", "Turkish", "Vietnamese", "Chinese (simple)", "Chinese (tradition)", "Arabic", "Hindi"];
+const langs = ["de", "en", "es", "fr", "id", "it", "jp", "kr", "pt", "ru", "th", "tr", "vi", "zh-Hans", "zh-Hant", "hi", "ar"];
+const langNames = ["German", "English", "Spanish", "French", "Indonesian", "Italian", "Japanese", "Korean", "Portugese", "Russian", "Thais", "Turkish", "Vietnamese", "Chinese (simple)", "Chinese (tradition)", "Hindi", "Arabic"];
 var langEnabled = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false];
 
 const nameKey = "a25ptx";
