@@ -27,7 +27,6 @@ function addEvent() {
 }
 
 function outputData(data, id, textMap, filler = null) {
-    let i = 0;
     for (let trans of data) {
         let text = trans.text;
         let lang = trans.to;
@@ -45,7 +44,6 @@ function outputData(data, id, textMap, filler = null) {
 
         setTextCell(id, lang, unwrapHtmlTags(text, textMap));
         setTextCell(`${id}_up`, lang, unwrapHtmlTags(text.toUpperCase(), textMap));
-        i++;
     }
 }
 
@@ -68,6 +66,14 @@ function replaceText(text, textMap, regex) {
 }
 
 function resetLanguageRow() {
+    // Remove all cells in the translation table
+    let cells = document.getElementsByTagName("td");
+
+    while (cells.length > 0) {
+        cells[0].remove();
+    }
+
+    // Replace the column headers
     let row = document.getElementById("language_row");
     row.replaceChildren();
     let cell = createCell("#");

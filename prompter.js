@@ -1,6 +1,5 @@
 const SinglePromptLimit = 25;
 
-// TODO: Multi-prompt split for long prompt
 async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     text = text.replaceAll("\n", "\\n");
     text = text.replaceAll(`"`, `\\"`);
@@ -8,8 +7,6 @@ async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
     if (errorChecking) {
         text = await fetchGptErrorCheck(text, temp);
     }
-
-    //let prompt = `Translate this: "${text}" into the languages below with a ${tone} tone, but but keep the sentence structure and anything between <> or {} brackets. Format the output like the this:`
 
     if (text.length <= SinglePromptLimit) {
         return fetchSinglePrompt(text, temp, tone);
@@ -72,8 +69,10 @@ function promptTranslateGpt(prompt, temp = 0.5) {
     let messages = [
         {
             role: "system",
-            content: `The user will give you a text, a tone for translating and a list of languages, delimited by JSON format.` 
-            + ` You will translate it into the provided languages, do not translate things inside <>, keep intact the sentence structure and escape characters.`
+            content: `The user will give you a text, a tone for translating and a list of languages, delimited by JSON format.`
+            + ` You will translate it into the provided languages.`
+            + ` Captialize words like the original text.`
+            + ` Do not translate things inside <>, keep intact the sentence structure and escape characters.`
             + ` Then give the output in JSON format like this: `
             + `{"translations":{"languages-code":"translation"}}`
         },
