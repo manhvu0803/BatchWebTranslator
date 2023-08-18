@@ -1,9 +1,6 @@
 const SinglePromptLimit = 25;
 
 async function fetchGpt(text, temp, tone = "serious", errorChecking = true) {
-    text = text.replaceAll("\n", "\\n");
-    text = text.replaceAll(`"`, `\\"`);
-
     if (errorChecking) {
         text = await fetchGptErrorCheck(text, temp);
     }
@@ -21,7 +18,7 @@ async function fetchGptErrorCheck(text, temp) {
         {
             role: "system",
             content: `The user will give you a text` 
-            + ` You will try to correct grammar and typo if possible. `
+            + ` You will try to correct grammar and typo without changing line breaks.`
             + ` Do not change things inside <> and escape characters`
             + ` Then give the output in JSON format like this: `
             + `{"original":"original-text","corrected":"corrected-text"}`
@@ -72,7 +69,8 @@ function promptTranslateGpt(prompt, temp = 0.5) {
             content: `The user will give you a text, a tone for translating and a list of languages, delimited by JSON format.`
             + ` You will translate it into the provided languages.`
             + ` Captialize words like the original text.`
-            + ` Do not translate things inside <>, keep intact the sentence structure and escape characters.`
+            + ` Do not translate things inside <>.`
+            + ` keep intact the line breaks, punctuations and escape characters.`
             + ` Then give the output in JSON format like this: `
             + `{"translations":{"languages-code":"translation"}}`
         },
