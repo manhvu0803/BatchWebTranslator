@@ -13,10 +13,8 @@ let allowList = [
     "104.28.205.",
     // Huy P
     "113.173.34.",
-    // Nha Trang
-    // This is temporary, should have cookie later
-    "113.160.248.",
-    "58.187.141."
+    // M
+    "116.109.101.",
 ]
 
 export default function middleware(req) {
