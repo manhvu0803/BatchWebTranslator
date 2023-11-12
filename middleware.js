@@ -16,6 +16,7 @@ let allowList = [
     // M
     "116.109.101.",
     "27.65.254.",
+    "116.110.43."
 ]
 
 export default function middleware(req) {
