@@ -19,7 +19,7 @@ async function fetchGptErrorCheck(text, temp) {
             role: "system",
             content: `The user will give you a text` 
             + ` You will try to correct grammar and typo without changing line breaks.`
-            + ` Do not change things inside <> and escape characters`
+            + ` Do not change things inside <>, words start with ${nameKey}, and escape characters`
             + ` Then give the output in JSON format like this: `
             + `{"original":"original-text","corrected":"corrected-text"}`
         },

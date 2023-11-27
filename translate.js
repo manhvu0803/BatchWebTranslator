@@ -58,7 +58,9 @@ function prepocessText(text) {
             let replacer = `${nameKey}${count}`;
             let str = name.substring(2, name.length - 2);
             map.set(replacer, str);
+            map.set(replacer.toUpperCase(), str);
             map.set(`<${replacer}>`, str);
+            map.set(`<${replacer.toUpperCase()}>`, str);
             text = text.replaceAll(name, replacer);
             count++;
         }
