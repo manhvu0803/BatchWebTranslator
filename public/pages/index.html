@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Localization tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="slider.css" rel="stylesheet">
+  </head>
+  <body style="padding: 1cm;" onload="registerEvents()">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="ui.js"></script>
+    <script src="translate.js"></script>
+    <script src="prompter.js"></script>
+    
+    <div class="input-group" style="min-height: 8em;">
+        <textarea id="text_input" class="form-control" name="text_input" placeholder="Text to translate..."></textarea>
+    </div>
+    <button id="translate_button" class="btn btn-outline-primary" type="button" onclick="translateInput()" style="min-width: 100%;">Translate</button>
+    
+    <div style="background-color: #fafafa; padding: 1em;">
+      <div style="padding-bottom: 1em;">
+        <a href="README.html" target="_blank">How to use</a>
+      </div>
+
+      <div class="dropdown" style="padding-bottom: 1em;">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Languages
+        </button>
+        <div class="dropdown-menu" id="language_dropdown_menu">
+          <div>
+            <input type="checkbox" class="form-check-input" id="de_checkbox" onchange="flipEnableLang(`de`)" name="german_checkbox" checked></input>
+            <label class="form-check-label" for="german_checkbox">
+              German
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="en_checkbox" onchange="flipEnableLang(`en`)" name="english_checkbox" checked></input>
+            <label class="form-check-label" for="english_checkbox">
+              English
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="es_checkbox" onchange="flipEnableLang(`es`)" name="spanish_checkbox" checked></input>
+            <label class="form-check-label" for="spanish_checkbox">
+              Spanish
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="fr_checkbox" onchange="flipEnableLang(`fr`)" name="french_checkbox" checked></input>
+            <label class="form-check-label" for="french_checkbox">
+              French
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="id_checkbox" onchange="flipEnableLang(`id`)" name="indonesian_checkbox" checked></input>
+            <label class="form-check-label" for="indonesian_checkbox">
+              Indonesian
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="it_checkbox" onchange="flipEnableLang(`it`)" name="italian_checkbox" checked></input>
+            <label class="form-check-label" for="italian_checkbox">
+              Italian
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="jp_checkbox" onchange="flipEnableLang(`jp`)" name="japan_checkbox" checked></input>
+            <label class="form-check-label" for="japan_checkbox">
+              Japan
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="kr_checkbox" onchange="flipEnableLang(`kr`)" name="korean_checkbox" checked></input>
+            <label class="form-check-label" for="korean_checkbox">
+              Korean
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="pt_checkbox" onchange="flipEnableLang(`pt`)" name="portugese_checkbox" checked></input>
+            <label class="form-check-label" for="portugese_checkbox">
+              Portugese
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="ru_checkbox" onchange="flipEnableLang(`ru`)" name="russian_checkbox" checked></input>
+            <label class="form-check-label" for="russian_checkbox">
+              Russian
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="th_checkbox" onchange="flipEnableLang(`th`)" name="thais_checkbox" checked></input>
+            <label class="form-check-label" for="thais_checkbox">
+              Thais
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="tr_checkbox" onchange="flipEnableLang(`tr`)" name="turkish_checkbox" checked></input>
+            <label class="form-check-label" for="turkish_checkbox">
+              Turkish
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="vi_checkbox" onchange="flipEnableLang(`vi`)" name="vietnamese_checkbox" checked></input>
+            <label class="form-check-label" for="vietnamese_checkbox">
+              Vietnamese
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="zh-Hans_checkbox" onchange="flipEnableLang(`zh-Hans`)" name="chinese_simple_checkbox" checked></input>
+            <label class="form-check-label" for="chinese_simple_checkbox">
+              Chinese (simple)
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="zh-Hant_checkbox" onchange="flipEnableLang(`zh-Hant`)" name="chinese_tradition_checkbox" checked></input>
+            <label class="form-check-label" for="chinese_tradition_checkbox">
+              Chinese (tradition)
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="ar_checkbox" onchange="flipEnableLang(`ar`)" name="arabic_checkbox" checked></input>
+            <label class="form-check-label" for="arabic_checkbox">
+              Arabic
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" class="form-check-input" id="hi_checkbox" onchange="flipEnableLang(`hi`)" name="hindi_checkbox" checked></input>
+            <label class="form-check-label" for="hindi_checkbox">
+              Hindi
+            </label>
+          </div>
+        </div>
+      </div>
+  
+      <div style="padding-bottom: 0.75em;">
+        <input type="checkbox" class="form-check-input" name="for_excel_input" id="for_excel_input" checked></input>
+        <label for="for_excel_input" data-bs-toggle="tooltip" data-bs-original-title="Check this if you are copying and pasting this text into Excel, WPS or any spreadsheet editor">
+          Copy for Excel/WPS/.etc
+        </label>
+      </div>
+      
+      <label for="color_input" data-bs-toggle="tooltip" data-bs-original-title="Replace text in (( ... )) with the &lt color=#...&gt...&lt/color&gt you chose">Replace color: </label>
+      <input type="color" id="color_input" name="color_input" value="#FFDD00"></input>
+      
+      <div style="padding-top: 1em;">
+        <label for="temp_input" id="temp_input_label">Temparature: 0.5</label>
+      </div>
+      <input id="temp_input" type="range" class="form-range" name="temp_input" min="0" max="1" step="0.01" style="max-width: 30%; padding-top: 1em; padding-bottom: 1em; accent-color: black;" 
+      oninput="onTempChange(this.value)"></input>
+
+      <div style="padding-bottom: 1em; padding-top: 1em;">
+        <span>
+          <input type="checkbox" class="form-check-input" name="error_correcting_input" id="error_correcting_input"></input>
+          <label for="error_correcting_input" data-bs-toggle="tooltip" data-bs-original-title="Make ChatGPT check for error before translating. Increase wait time">Check for error</label>
+        </span>
+        <span style="padding-left: 3em;">
+          <label for="tone_select">Tone:</label>
+          <select name="tone_select" id="tone_select" data-bs-toggle="tooltip" data-bs-original-title="Try to make ChatGPT change the text's tone. Default option is usually faster">
+            <option value="serious">Serious (default)</option>
+            <option value="casual">Casual</option>
+            <option value="optimistic">Optimistic</option>
+            <option value="pessimistic">Pessimistic</option>
+            <option value="lighthearted">Lighthearted</option>
+          </select>
+        </span>
+      </div>
+    </div>
+
+    <table class="table table-bordered" style="padding-top: 1em;">
+        <thead>
+          <tr id="language_row">
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="gpt_row">
+            <th scope="row">ChatGPT 3.5<br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+          <tr id="gpt_row_up">
+            <th scope="row">ChatGPT 3.5 UPPERCASE<br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+          <tr id="google_row">
+            <th scope="row">Google
+              <br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+          <tr id="google_row_up">
+            <th scope="row">Google UPPERCASE
+              <br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+          <tr id="microsoft_row">
+            <th scope="row">Microsoft
+              <br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+          <tr id="microsoft_row_up">
+            <th scope="row">Microsoft UPPERCASE
+              <br>
+              <button onclick="copyToClipboard(this.parentNode.parentNode.id)">Copy text</button>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      
+  </body>
+</html>

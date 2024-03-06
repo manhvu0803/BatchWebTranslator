@@ -5,6 +5,8 @@ if (!process.env.OPENAI_KEY) {
     dotenv.config();
 }
 
+const debug = process.env.DEBUG;
+
 export default async function handler(req, res) {
     if (req.query.key) {
         res.send(process.env.OPENAI_KEY);
@@ -28,7 +30,7 @@ export default async function handler(req, res) {
     }
 }
 
-async function prompt(text, temp, tone = "serious", debug = false) {
+async function prompt(text, temp, tone = "serious") {
     var body = {
         model: "gpt-3.5-turbo",
         messages: [
@@ -72,10 +74,10 @@ async function prompt(text, temp, tone = "serious", debug = false) {
     }
     
     let response = await axios.post("https://api.openai.com/v1/chat/completions", body, { headers: headers });
-    return parseResponse(response, debug);
+    return parseResponse(response);
 }
 
-function parseResponse(response, debug) {
+function parseResponse(response) {
     var data = response.data.choices[0];
 
     var rawMessage = data.message.content;

@@ -7,8 +7,8 @@ if (!process.env.MICROSOFT_KEY) {
 }
 
 let key = process.env.MICROSOFT_KEY;
-let endpoint = "https://api.cognitive.microsofttranslator.com";
-let location = "eastus2";
+let endpoint = process.env.MICROSOFT_ENDPOINT;
+let location = process.env.MICROSOFT_LOCATION;
 
 export default async function handler(req, res) {
     let text = req.body;
